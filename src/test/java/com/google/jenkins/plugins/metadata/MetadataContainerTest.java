@@ -31,13 +31,13 @@ import org.mockito.MockitoAnnotations;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 
-import hudson.model.AbstractBuild;
+import hudson.model.Run;
 
 /**
  * Unit test for {@link MetadataContainer}.
  */
 public class MetadataContainerTest {
-  @Mock private AbstractBuild<?, ?> build;
+  @Mock private Run<?, ?> build;
   private MetadataContainer underTest;
 
   @Before
