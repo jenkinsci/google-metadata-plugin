@@ -32,8 +32,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
-import hudson.model.AbstractBuild;
 import hudson.model.InvisibleAction;
+import hudson.model.Run;
 
 /**
  * A build's {@link InvisibleAction} containing metadata.
@@ -115,7 +115,7 @@ public class MetadataContainer extends InvisibleAction {
    *          a given build.
    * @return the {@link MetadataContainer} for the given build.
    */
-  public static synchronized MetadataContainer of(AbstractBuild<?, ?> build) {
+  public static synchronized MetadataContainer of(Run<?, ?> build) {
     MetadataContainer container = build.getAction(MetadataContainer.class);
     if (container == null) {
       container = new MetadataContainer();
@@ -187,12 +187,11 @@ public class MetadataContainer extends InvisibleAction {
   }
 
   /**
-   * @param build a given {@link AbstractBuild}.
+   * @param build a given {@link Run}.
    * @return the metadata contained in the {@link MetadataContainer} of the
-   *         given {@link AbstractBuild}.
+   *         given {@link Run}.
    */
-  public static Multimap<String, MetadataValue>
-      getMetadata(AbstractBuild<?, ?> build) {
+  public static Multimap<String, MetadataValue> getMetadata(Run<?, ?> build) {
     return of(build).getMetadata();
   }
 }
