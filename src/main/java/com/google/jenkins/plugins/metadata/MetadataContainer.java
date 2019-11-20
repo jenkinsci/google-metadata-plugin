@@ -15,15 +15,9 @@
  */
 package com.google.jenkins.plugins.metadata;
 
-import java.util.Collection;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
@@ -31,9 +25,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-
 import hudson.model.InvisibleAction;
 import hudson.model.Run;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A build's {@link InvisibleAction} containing metadata.
@@ -54,12 +50,7 @@ public class MetadataContainer extends InvisibleAction {
   }
 
   private Object readResolve() {
-    objectMapper = Suppliers.memoize(new Supplier<ObjectMapper>() {
-      @Override
-      public ObjectMapper get() {
-        return new ObjectMapper();
-      }
-    });
+    objectMapper = Suppliers.memoize(ObjectMapper::new)::get;
     return this;
   }
 
@@ -102,12 +93,7 @@ public class MetadataContainer extends InvisibleAction {
    */
   public Map<String, String> getSerializedMetadata() {
     return Maps.newHashMap(Maps.transformValues(
-        metadata.asMap(), new Function<Collection<MetadataValue>, String>() {
-          @Override
-          public String apply(Collection<MetadataValue> values) {
-            return listSerialize(values);
-          }
-        }));
+        metadata.asMap(), this::listSerialize));
   }
 
   /**
@@ -146,7 +132,7 @@ public class MetadataContainer extends InvisibleAction {
   public <T extends MetadataValue> String listSerialize(Iterable<T> values) {
     try {
       return getObjectMapper()
-          .writerWithType(new TypeReference<Iterable<MetadataValue>>() {})
+          .writerFor(new TypeReference<Iterable<MetadataValue>>() {})
           .writeValueAsString(values);
     } catch (JsonProcessingException ex) {
       throw new MetadataSerializationException(ex);
@@ -172,7 +158,9 @@ public class MetadataContainer extends InvisibleAction {
       String serialized) {
     try {
       return getObjectMapper().readValue(
-          serialized, new TypeReference<Iterable<MetadataValue>>() {});
+        serialized,
+        new TypeReference<Iterable<T>>() {}
+      );
     } catch (Exception ex) {
       throw new MetadataSerializationException(ex);
     }
