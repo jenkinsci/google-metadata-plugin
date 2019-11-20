@@ -2,7 +2,9 @@ Jenkins Google Metadata Plugin
 =====================
 This plugin provides a basic framework for steps in a build’s lifecycle to attach JSON-serializable metadata to a build (as an invisible action).
 
-[![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/google-metadata-plugin)](https://jenkins.ci.cloudbees.com/job/plugins/job/google-metadata-plugin/)
+[![](https://img.shields.io/jenkins/plugin/v/google-metadata-plugin.svg?label=version)](https://plugins.jenkins.io/google-metadata-plugin)
+[![](https://img.shields.io/github/v/release/jenkinsci/google-metadata-plugin.svg?label=changelog)](https://github.com/jenkinsci/google-metadata-plugin/releases/latest)
+[![](https://img.shields.io/jenkins/plugin/i/google-metadata-plugin.svg?color=blue)](https://plugins.jenkins.io/google-metadata-plugin)
 
 Read more: [http://wiki.jenkins-ci.org/display/JENKINS/Google+Metadata+Plugin](http://wiki.jenkins-ci.org/display/JENKINS/Google+Metadata+Plugin)
 
@@ -12,7 +14,7 @@ Development
 How to build
 --------------
 
-	mvn clean verify
+	mvn verify
 
 Creates the plugin HPI package for use with Jenkins.
 
