@@ -6,7 +6,7 @@ This plugin provides a basic framework for steps in a build’s lifecycle to att
 [![](https://img.shields.io/github/v/release/jenkinsci/google-metadata-plugin.svg?label=changelog)](https://github.com/jenkinsci/google-metadata-plugin/releases/latest)
 [![](https://img.shields.io/jenkins/plugin/i/google-metadata-plugin.svg?color=blue)](https://plugins.jenkins.io/google-metadata-plugin)
 
-Read more: [http://wiki.jenkins-ci.org/display/JENKINS/Google+Metadata+Plugin](http://wiki.jenkins-ci.org/display/JENKINS/Google+Metadata+Plugin)
+Read more: [https://plugins.jenkins.io/google-metadata-plugin](https://plugins.jenkins.io/google-metadata-plugin)
 
 Development
 ===========
