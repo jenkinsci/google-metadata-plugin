@@ -71,8 +71,7 @@ public class MetadataContainerTest {
   public void add() {
     TestMetadata data = new TestMetadata("data");
     underTest.add(data);
-    assertThat(underTest.getMetadata().get(data.getKey()),
-        contains((MetadataValue) data));
+    assertThat(underTest.getMetadata().get(data.getKey()), contains(data));
   }
 
   @Test
