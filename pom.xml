@@ -32,7 +32,7 @@
   <description>
     This plugin provides a basic framework for steps in a build’s lifecycle to attach JSON-serializable metadata to a build (as an invisible action).
   </description>
-  <url>http://wiki.jenkins-ci.org/display/JENKINS/Google+Metadata+Plugin</url>
+  <url>https://github.com/jenkinsci/google-metadata-plugin/blob/master/docs/Documentation.md</url>
   <licenses>
     <license>
       <name>The Apache V2 License</name>
