@@ -25,7 +25,7 @@
   </parent>
 
   <artifactId>google-metadata-plugin</artifactId>
-  <version>0.4</version>
+  <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
 
   <name>Google Metadata plugin</name>
@@ -56,11 +56,11 @@
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}.git</developerConnection>
     <url>http://github.com/jenkinsci/${project.artifactId}</url>
-    <tag>google-metadata-plugin-0.4</tag>
+    <tag>${scmTag}</tag>
   </scm>
 
   <properties>
-    <revision>0.4</revision>
+    <revision>0.5</revision>
     <changelist>-SNAPSHOT</changelist>
     <jenkins.version>2.346.1</jenkins.version>
   </properties>
