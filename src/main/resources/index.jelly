@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<div>
+  Provides a basic framework for steps in a build’s lifecycle to attach JSON-serializable metadata to a build (as an invisible action).
+</div>
