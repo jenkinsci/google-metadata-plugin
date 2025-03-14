@@ -3,9 +3,38 @@
  https://github.com/jenkins-infra/pipeline-library/
 */
 buildPlugin(
-  forkCount: '1C', // run this number of tests in parallel for faster feedback.  If the number terminates with a 'C', the value will be multiplied by the number of available CPU cores
-  useContainerAgent: true, // Set to `false` if you need to use Docker for containerized tests
+  forkCount: '1C',
+  useContainerAgent: true,
   configurations: [
     [platform: 'linux', jdk: 21],
     [platform: 'windows', jdk: 17],
-])
+  ]
+)
+
+pipeline {
+    agent any
+
+    environment {
+        GCS_BUCKET = 'your-bucket-name'  // Replace with your actual GCS bucket name
+        GCS_CREDENTIALS_ID = 'your-jenkins-credentials-id' // Set in Jenkins credentials
+    }
+
+    stages {
+        stage('Upload to GCS') {
+            steps {
+                script {
+                    googleStorageUpload(
+                        credentialsId: GCS_CREDENTIALS_ID,
+                        bucket: GCS_BUCKET,
+                        pattern: '**/*.txt',  // Upload all text files
+                        sharedPublicly: false, // Set true if public access is needed
+                        metadata: [
+                            "Content-Type": "text/plain",
+                            "Content-Encoding": "gzip"
+                        ]
+                    )
+                }
+            }
+        }
+    }
+}
