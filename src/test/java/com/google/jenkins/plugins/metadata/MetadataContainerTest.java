@@ -15,50 +15,52 @@
  */
 package com.google.jenkins.plugins.metadata;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-
 import hudson.model.Run;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test for {@link MetadataContainer}.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class MetadataContainerTest {
-  @Mock private Run<?, ?> build;
+@ExtendWith(MockitoExtension.class)
+class MetadataContainerTest {
+
+  @Mock
+  private Run<?, ?> build;
   private MetadataContainer underTest;
 
-  @Before
-  public void setup() {
+  @BeforeEach
+  void setup() {
     underTest = new MetadataContainer();
   }
 
   @Test
-  public void ofNotPresent() {
+  void ofNotPresent() {
     assertNotSame(underTest, MetadataContainer.of(build));
   }
 
   @Test
-  public void ofPresent() {
+  void ofPresent() {
     when(build.getAction(MetadataContainer.class)).thenReturn(underTest);
     assertSame(underTest, MetadataContainer.of(build));
   }
 
   @Test
-  public void getMetadata() {
+  void getMetadata() {
     TestMetadata data = new TestMetadata("data");
     underTest.add(data);
 
@@ -68,14 +70,14 @@ public class MetadataContainerTest {
   }
 
   @Test
-  public void add() {
+  void add() {
     TestMetadata data = new TestMetadata("data");
     underTest.add(data);
     assertThat(underTest.getMetadata().get(data.getKey()), contains(data));
   }
 
   @Test
-  public void addAll() {
+  void addAll() {
     TestMetadata data1 = new TestMetadata("key1");
     TestMetadata data2 = new TestMetadata("key2");
     TestMetadata data3 = new TestMetadata("key2"); // intentionally the same
@@ -89,7 +91,7 @@ public class MetadataContainerTest {
   }
 
   @Test
-  public void removeAll() {
+  void removeAll() {
     TestMetadata data1 = new TestMetadata("key");
     TestMetadata data2 = new TestMetadata("key");
 
@@ -102,7 +104,7 @@ public class MetadataContainerTest {
   }
 
   @Test
-  public void getSerializedMetadata() {
+  void getSerializedMetadata() {
     TestMetadata data = new TestMetadata("data");
     underTest.add(data);
     assertEquals(
@@ -110,14 +112,16 @@ public class MetadataContainerTest {
         underTest.getSerializedMetadata().get(data.getKey()));
   }
 
-  @Test(expected = MetadataSerializationException.class)
-  public void serialize_exception() {
-    underTest.serialize(new NotSerializable());
+  @Test
+  void serialize_exception() {
+    assertThrows(MetadataSerializationException.class, () ->
+        underTest.serialize(new NotSerializable()));
   }
 
-  @Test(expected = MetadataSerializationException.class)
-  public void deserialize_exception() {
-    underTest.deserialize(NotSerializable.class, "bad");
+  @Test
+  void deserialize_exception() {
+    assertThrows(MetadataSerializationException.class, () ->
+        underTest.deserialize(NotSerializable.class, "bad"));
   }
 
   /**
@@ -134,6 +138,7 @@ public class MetadataContainerTest {
     }
     private final String key;
   }
+
   /**
    * A class that can't be serialized nor deserialized, for testing of exception
    * handling.
